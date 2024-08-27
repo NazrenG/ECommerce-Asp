@@ -53,7 +53,7 @@
                 else
                 {
                     <a class="btn btn-primary" href='/@Model.Products.ControllerName/index?page=@Model.Products.CurrentPage&category=@Model.Products.CurrentCategory&orderByName=@(Model.Products.OrderByName=="asc"?"desc":"asc")&orderByPrice='>A-Z</a>
-                    <a class="btn btn-primary" href='/@Model.Products./index?page=@Model.Products.CurrentPage&category=@Model.Products.CurrentCategory&orderByName=&orderByPrice=@(Model.Products.OrderByPrice=="asc"?"desc":"asc")'>Higher-To Lower</a>
+                    <a class="btn btn-primary" href='/@Model.Products.ControllerName/index?page=@Model.Products.CurrentPage&category=@Model.Products.CurrentCategory&orderByName=&orderByPrice=@(Model.Products.OrderByPrice=="asc"?"desc":"asc")'>Higher-To Lower</a>
 
                     <a asp-action="CreateProduct" asp-controller="Admin" class="btn btn-xs btn-success">
                         +New Product
