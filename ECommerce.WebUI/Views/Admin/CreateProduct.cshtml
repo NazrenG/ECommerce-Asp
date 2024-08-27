@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model CategoryAndProductViewModel
+<h2>create prtoduct</h2>
+<form asp-page-handler="CreateProduct" method="post">
+    <div class="mb-3">
+        <label asp-for="Product.ProductName" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Product.ProductName" placeholder="Enter your name">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Product.UnitPrice" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Product.UnitPrice" placeholder="Enter unit price">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Product.UnitsInStock" class="form-label"></label>
+        <input type="text" class="form-control" asp-for="Product.UnitsInStock" placeholder="Enter unit in stock">
+    </div>
+    <div class="form-group">
+        <label asp-for="Product.CategoryId" class="form-label">Select Category</label>
+        <select asp-for="Product.CategoryId" class="form-control" asp-items="ViewBag.CategoryList">
+            <option value="">-- Select a Category --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top:15px">Submit</button>
+</form>
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-info animate__animated animate__bounceInLeft" role="alert">@TempData["message"]</div>
+}

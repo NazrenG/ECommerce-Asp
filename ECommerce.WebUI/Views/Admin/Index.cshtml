@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model CategoryAndProductViewModel
+
+
+ 
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <section class="list-group">
+
+                <a class="@(Model.Products?.CurrentCategory ==0 ? "list-group-item active" : "list-group-item")" href="../admin/index?page=1&category=0" style="cursor:pointer;">All Category</a>
+
+
+                @foreach (var i in Model.Categories.Categories)
+                {
+                    var cssClass = Model.Categories.CurrentCategory == i.CategoryId
+                    ? "list-group-item active d-flex justify-content-between"
+                    : "list-group-item d-flex justify-content-between";
+                    <div class="@cssClass">
+                        <a href="../admin/index?page=1&category=@i.CategoryId"
+                           style="cursor:pointer; border-color: transparent; color:black;text-decoration:none">
+                            @i.CategoryName
+                        </a>
+                        <form method="get" asp-action="Remove" asp-controller="Admin">
+                            <input  type="hidden" name="id" value="@i.CategoryId"/>
+							<button type="submit" class="btn btn-danger btn-sm">X</button>
+                        </form>
+                       
+                    </div>
+                }
+            </section>
+
+            <form method="post" asp-action="Create" asp-controller="Admin">
+                <label asp-for="Category.CategoryName">Category Name</label>
+                <input asp-for="Category.CategoryName" type="text" placeholder="Enter category name..."/>
+                <button type="submit" class="btn btn-sm btn-success">ADD</button>
+           
+            </form>
+        </div>
+        <div class="col-md-9">
+            @if (TempData["message"] != null)
+            {
+                <div class="alert alert-info animate__animated animate__bounceInLeft" role="alert">@TempData["message"]</div>
+            }
+            <main role="main" class="pb-3">
+                @if( Model.Products?.Product == null || Model.Products.Product.Count == 0)
+                {
+                    <span class="alert alert-info">No Product Exist</span>
+                }
+                else
+                {
+                    <a class="btn btn-primary" href='/@Model.Products.ControllerName/index?page=@Model.Products.CurrentPage&category=@Model.Products.CurrentCategory&orderByName=@(Model.Products.OrderByName=="asc"?"desc":"asc")&orderByPrice='>A-Z</a>
+                    <a class="btn btn-primary" href='/@Model.Products./index?page=@Model.Products.CurrentPage&category=@Model.Products.CurrentCategory&orderByName=&orderByPrice=@(Model.Products.OrderByPrice=="asc"?"desc":"asc")'>Higher-To Lower</a>
+
+                    <a asp-action="CreateProduct" asp-controller="Admin" class="btn btn-xs btn-success">
+                        +New Product
+                    </a>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Unit Price</th>
+                                <th>UnitsInStock</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Products.Product)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.ProductName
+                                    </td>
+                                    <td>
+                                        @item.UnitPrice
+                                    </td>
+                                    <td>
+                                        @item.UnitsInStock
+                                    </td>
+                                    <td>
+                                        <form method="get" asp-action="RemoveProduct" asp-controller="Admin"  >
+                                        <input type="hidden" name="category" asp-for="Products.CurrentCategory" />
+                                        <input type="hidden" name="page" asp-for="Products.CurrentPage" />
+                                        <input type="hidden" name="orderByName" asp-for="Products.OrderByName" />
+                                        <input type="hidden" name="orderByPrice" asp-for="Products.OrderByPrice" />
+                                            <input type="hidden" name="id" value="@item.ProductId" />
+                                            <button type="submit" class="btn btn-xs btn-danger">Remove</button>
+                                        </form>
+                                    
+                                    </td> 
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <product-list-pager current-category="@Model.Products.CurrentCategory"
+                                        current-page="@Model.Products.CurrentPage"
+                                        page-count="@Model.Products.PageCount"
+                                        page-size="@Model.Products.PageSize"
+                    controller-name="@Model.Products.ControllerName"></product-list-pager>
+                }
+
+            </main>
+        </div>
+    </div>
+</div>
